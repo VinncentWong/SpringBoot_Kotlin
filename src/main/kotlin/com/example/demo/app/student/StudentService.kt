@@ -16,9 +16,6 @@ import org.springframework.stereotype.Service
 class StudentService(
     @Autowired
     val studentRepo: StudentRepository,
-
-    @Autowired
-    val util: ResponseUtil
 ){
 
     fun createStudent(dto: StudentDto): ResponseEntity<Response>{
@@ -26,11 +23,11 @@ class StudentService(
         val departement: Departement = Departement(dto.departement.namaDepartement, student)
         student.departement = departement
         this.studentRepo.save(student)
-        return this.util.sendResponse("sukses menambahkan student", HttpStatus.CREATED.value(), true, student)
+        return ResponseUtil.sendResponse("sukses menambahkan student", HttpStatus.CREATED.value(), true, student)
     }
 
     fun findStudent(id: Long): ResponseEntity<Response>{
         val student: Student = this.studentRepo.findById(id).orElseThrow(){StudentNotFoundException("data student tidak ditemukan")}
-        return this.util.sendResponse("sukses menemukan student", HttpStatus.OK.value(), true, student)
+        return ResponseUtil.sendResponse("sukses menemukan student", HttpStatus.OK.value(), true, student)
     }
 }
